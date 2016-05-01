@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 69bca9cfaf0347e42acd0c2117bb7b34
+timeCreated: 1462036814
+licenseType: Free
+ShaderImporter:
+  defaultTextures:
+  - _RoadTexture: {fileID: 2800000, guid: 4d9ea93b41672ea4b9c5ee2c99a622be, type: 3}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

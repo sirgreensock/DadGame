@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DadGame.CSharp", "DadGame.CSharp.csproj", "{FD0E1D5E-3FF5-DC32-39B6-98E132174957}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DadGame.CSharp.Editor", "DadGame.CSharp.Editor.csproj", "{2340A975-9E40-E327-7E33-B0DD5961B098}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD0E1D5E-3FF5-DC32-39B6-98E132174957}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD0E1D5E-3FF5-DC32-39B6-98E132174957}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD0E1D5E-3FF5-DC32-39B6-98E132174957}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD0E1D5E-3FF5-DC32-39B6-98E132174957}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2340A975-9E40-E327-7E33-B0DD5961B098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2340A975-9E40-E327-7E33-B0DD5961B098}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2340A975-9E40-E327-7E33-B0DD5961B098}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2340A975-9E40-E327-7E33-B0DD5961B098}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,270 @@
+fileFormatVersion: 2
+guid: 25b9f4a182c2b7846bc6b15cb90c4b6e
+timeCreated: 1462064165
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Dad
+    21300002: Cake
+    21300004: Run
+    21300006: Present2
+    21300008: Present3
+    21300010: Present1
+    21300012: Arrow
+    21300014: CakeIcon
+    21300016: SadDad
+    21300018: HappyDad
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 512
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 200
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Dad
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 705
+        width: 554
+        height: 302
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 139.5, y: 50.5}
+        - {x: 118.5, y: 76.5}
+        - {x: -3.5, y: 76.5}
+        - {x: -52.5, y: 71.5}
+        - {x: -138.5, y: 53.5}
+        - {x: -138.5, y: -40.5}
+        - {x: -134.5, y: -63.5}
+        - {x: -123.5, y: -75.5}
+        - {x: 12.5, y: -75.5}
+        - {x: 93.5, y: -55.5}
+        - {x: 137.5, y: -33.5}
+        - {x: 139.5, y: -23.5}
+    - name: Cake
+      rect:
+        serializedVersion: 2
+        x: 591
+        y: 699
+        width: 422
+        height: 325
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -43.5, y: 82}
+        - {x: -105.5, y: -32}
+        - {x: -105.5, y: -68}
+        - {x: -91.5, y: -79}
+        - {x: -67.5, y: -81}
+        - {x: 67.5, y: -81}
+        - {x: 106.5, y: -71}
+        - {x: 106.5, y: -28}
+        - {x: 54.5, y: 82}
+    - name: Run
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 369
+        width: 516
+        height: 308
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 99, y: 59}
+        - {x: 23, y: 73}
+        - {x: -13, y: 77}
+        - {x: -37, y: 78}
+        - {x: -119, y: 78}
+        - {x: -128, y: 64}
+        - {x: -129, y: 50}
+        - {x: -129, y: -37}
+        - {x: -119, y: -53}
+        - {x: 30, y: -77}
+        - {x: 102, y: -77}
+        - {x: 124, y: -36}
+        - {x: 130, y: -8}
+        - {x: 130, y: 50}
+    - name: Present2
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 488
+        width: 178
+        height: 202
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -28.5, y: 50.5}
+        - {x: -44.5, y: 25.5}
+        - {x: -44.5, y: -45.5}
+        - {x: -38.5, y: -50.5}
+        - {x: 40.5, y: -50.5}
+        - {x: 45.5, y: -46.5}
+        - {x: 45.5, y: 23.5}
+        - {x: 30.5, y: 50.5}
+    - name: Present3
+      rect:
+        serializedVersion: 2
+        x: 791
+        y: 487
+        width: 178
+        height: 202
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 32.5, y: 51.5}
+        - {x: -19.5, y: 51.5}
+        - {x: -44.5, y: 36.5}
+        - {x: -44.5, y: -50.5}
+        - {x: 39.5, y: -50.5}
+        - {x: 45.5, y: -42.5}
+        - {x: 45.5, y: 29.5}
+    - name: Present1
+      rect:
+        serializedVersion: 2
+        x: 579
+        y: 313
+        width: 270
+        height: 164
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -47.5, y: 42}
+        - {x: -67.5, y: 37}
+        - {x: -67.5, y: -41}
+        - {x: 68.5, y: -41}
+        - {x: 68.5, y: 29}
+        - {x: 44.5, y: 42}
+    - name: Arrow
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 0
+        width: 132
+        height: 227
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: 57}
+        - {x: -33, y: 16}
+        - {x: -33, y: -29}
+        - {x: 1, y: -55}
+        - {x: 6, y: -57}
+        - {x: 33, y: -57}
+        - {x: 34, y: -55}
+        - {x: 34, y: 57}
+    - name: CakeIcon
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 49
+        width: 160
+        height: 147
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 28, y: 37.5}
+        - {x: -30, y: 37.5}
+        - {x: -40, y: 25.5}
+        - {x: -40, y: -33.5}
+        - {x: -37, y: -36.5}
+        - {x: 40, y: -36.5}
+        - {x: 41, y: -31.5}
+        - {x: 41, y: 29.5}
+        - {x: 35, y: 36.5}
+    - name: SadDad
+      rect:
+        serializedVersion: 2
+        x: 373
+        y: 13
+        width: 196
+        height: 220
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 29, y: 56}
+        - {x: -35, y: 56}
+        - {x: -49, y: 24}
+        - {x: -49, y: -44}
+        - {x: -39, y: -55}
+        - {x: 30, y: -55}
+        - {x: 49, y: -50}
+        - {x: 50, y: -44}
+        - {x: 50, y: 35}
+        - {x: 47, y: 45}
+    - name: HappyDad
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 15
+        width: 196
+        height: 220
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 21, y: 56}
+        - {x: -31, y: 56}
+        - {x: -49, y: 26}
+        - {x: -49, y: -48}
+        - {x: -42, y: -55}
+        - {x: 31, y: -55}
+        - {x: 49, y: -50}
+        - {x: 50, y: -42}
+        - {x: 50, y: 13}
+        - {x: 22, y: 55}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

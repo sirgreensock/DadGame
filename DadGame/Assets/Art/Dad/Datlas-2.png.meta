@@ -1,0 +1,151 @@
+fileFormatVersion: 2
+guid: f26e7dc869903f64eb0c3a6d8c47851a
+timeCreated: 1461977110
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Head
+    21300002: Arm
+    21300004: Torso
+    21300006: Leg
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 512
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Head
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 326
+        width: 186
+        height: 183
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -86, y: 54.5}
+        - {x: -86, y: -58.5}
+        - {x: -56, y: -86.5}
+        - {x: 73, y: -86.5}
+        - {x: 73, y: -34.5}
+        - {x: 72, y: -16.5}
+        - {x: 29, y: 80.5}
+        - {x: -55, y: 80.5}
+        - {x: -78, y: 75.5}
+    - name: Arm
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 335
+        width: 293
+        height: 166
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 124.5, y: -12}
+        - {x: -90.5, y: 66}
+        - {x: -117.5, y: 66}
+        - {x: -132.5, y: 46}
+        - {x: -132.5, y: -3}
+        - {x: 66.5, y: -72}
+        - {x: 124.5, y: -72}
+        - {x: 132.5, y: -63}
+        - {x: 134.5, y: -52}
+        - {x: 134.5, y: -26}
+    - name: Torso
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 19
+        width: 237
+        height: 297
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 98.5, y: -67.5}
+        - {x: 98.5, y: -31.5}
+        - {x: 96.5, y: 8.5}
+        - {x: 69.5, y: 76.5}
+        - {x: 60.5, y: 93.5}
+        - {x: 23.5, y: 131.5}
+        - {x: 2.5, y: 133.5}
+        - {x: -106.5, y: 133.5}
+        - {x: -106.5, y: 105.5}
+        - {x: -91.5, y: -30.5}
+        - {x: -87.5, y: -75.5}
+        - {x: -67.5, y: -106.5}
+        - {x: -45.5, y: -128.5}
+        - {x: -27.5, y: -129.5}
+        - {x: 28.5, y: -129.5}
+        - {x: 41.5, y: -124.5}
+        - {x: 75.5, y: -98.5}
+        - {x: 97.5, y: -70.5}
+    - name: Leg
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 24
+        width: 158
+        height: 289
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 50, y: -41.5}
+        - {x: 46, y: 111.5}
+        - {x: 29, y: 126.5}
+        - {x: -64, y: 126.5}
+        - {x: -64, y: -109.5}
+        - {x: -31, y: -119.5}
+        - {x: 63, y: -119.5}
+        - {x: 70, y: -116.5}
+        - {x: 70, y: -92.5}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
