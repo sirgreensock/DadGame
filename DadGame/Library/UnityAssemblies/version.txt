@@ -1,5 +1,5 @@
 5.3.4f1:2.2.0.0
-StandaloneWindows
+iOS
 N:/Unity/Editor/Data/Managed/UnityEngine.dll
 N:/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
 N:/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
