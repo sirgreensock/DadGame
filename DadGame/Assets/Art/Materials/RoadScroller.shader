@@ -36,7 +36,7 @@ Shader "Shader Forge/RoadScroller" {
             #pragma multi_compile _ PIXELSNAP_ON
             #include "UnityCG.cginc"
             #pragma multi_compile_fwdbase
-            #pragma exclude_renderers d3d9 d3d11 d3d11_9x xbox360 xboxone ps3 ps4 psp2 
+            #pragma exclude_renderers d3d9 d3d11_9x xbox360 xboxone ps3 ps4 psp2 
             #pragma target 3.0
             uniform float4 _Color;
             uniform float _LoopSpeed;
