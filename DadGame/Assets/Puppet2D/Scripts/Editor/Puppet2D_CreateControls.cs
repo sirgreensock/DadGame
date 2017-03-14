@@ -9,7 +9,11 @@ using System.Text.RegularExpressions;
 public class Puppet2D_CreateControls : Editor {
 
     [MenuItem ("GameObject/Puppet2D/Rig/Create IK Control")]
-    public static void IKCreateTool()
+    public static void IKCreateToolMenu()
+    {
+        IKCreateTool();
+    }
+    public static void IKCreateTool(bool worldSpace = false)
     {
 
         GameObject bone = Selection.activeObject as GameObject;
@@ -53,8 +57,7 @@ public class Puppet2D_CreateControls : Editor {
         }
 
         GameObject IKRoot = null;
-        if(bone.transform.parent)
-            if(bone.transform.parent.transform.parent)
+        if(bone.transform.parent && bone.transform.parent.transform.parent && bone.transform.parent.transform.parent.GetComponent<SpriteRenderer>() && bone.transform.parent.transform.parent.GetComponent<SpriteRenderer>().sprite !=null && bone.transform.parent.transform.parent.GetComponent<SpriteRenderer>().sprite.name.Contains("Bone") )
                 IKRoot = bone.transform.parent.transform.parent.gameObject;
         if(IKRoot==null)
         {
@@ -110,7 +113,8 @@ public class Puppet2D_CreateControls : Editor {
 
         control.transform.parent = controlGroup.transform;
         controlGroup.transform.position = bone.transform.position;
-        controlGroup.transform.rotation = bone.transform.rotation;
+        if(!worldSpace)
+            controlGroup.transform.rotation = bone.transform.rotation;
 
         GameObject poleVector = new GameObject();
         Undo.RegisterCreatedObjectUndo (poleVector, "Created polevector");
@@ -134,6 +138,9 @@ public class Puppet2D_CreateControls : Editor {
         ikHandle.scaleStart[0] = IKRoot.transform.localScale;
         ikHandle.scaleStart[1] = IKRoot.transform.GetChild(0).localScale;
         ikHandle.OffsetScale = bone.transform.localScale;
+
+        if (worldSpace)
+            ikHandle.Offset = ikHandle.bottomJointTransform.rotation;
 
         if(bone.GetComponent<SpriteRenderer>().sprite.name.Contains("Bone"))
         {

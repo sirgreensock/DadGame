@@ -266,12 +266,12 @@ public class Puppet2D_IKHandleEditor : Editor
 	}
 	void OnValidate()
 	{
-		Puppet2D_IKHandle myTarget = (Puppet2D_IKHandle)target;
+		//Puppet2D_IKHandle myTarget = (Puppet2D_IKHandle)target;
 
-		if (myTarget.SquashAndStretch)
-			Debug.Log ("Sqiuash");
-		else
-			Debug.Log ("normal");
+//		if (myTarget.SquashAndStretch)
+//			Debug.Log ("Sqiuash");
+//		else
+//			Debug.Log ("normal");
 
 
 	}

@@ -37,12 +37,13 @@ namespace HutongGames.PlayMaker.Actions
 
             if (!stringToSplit.IsNone && !stringArray.IsNone)
 	        {
-	            stringArray.stringValues = stringToSplit.Value.Split(separators.Value.ToCharArray());
+	            stringArray.Values = stringToSplit.Value.Split(separators.Value.ToCharArray());
 	            if (trimStrings.Value)
 	            {
-	                for (var i = 0; i < stringArray.stringValues.Length; i++)
+	                for (var i = 0; i < stringArray.Values.Length; i++)
 	                {
-                        var s = stringArray.stringValues[i];
+                        var s = stringArray.Values[i] as string;
+                        if (s == null) continue;
 	                    if (!trimChars.IsNone && trimCharsArray.Length > 0)
 	                    {
                             stringArray.Set(i, s.Trim(trimCharsArray));
@@ -52,8 +53,9 @@ namespace HutongGames.PlayMaker.Actions
 	                        stringArray.Set(i, s.Trim());
 	                    }
 	                }
-                    stringArray.SaveChanges();
+                   
 	            }
+                stringArray.SaveChanges();
 	        }
 
 		    Finish();

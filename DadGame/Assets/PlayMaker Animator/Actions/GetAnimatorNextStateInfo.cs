@@ -1,25 +1,21 @@
-// (c) Copyright HutongGames, LLC 2010-2015. All rights reserved.
+// (c) Copyright HutongGames, LLC 2010-2016. All rights reserved.
 
 using UnityEngine;
 
 namespace HutongGames.PlayMaker.Actions
 {
-	[ActionCategory("Animator")]
+	[ActionCategory(ActionCategory.Animator)]
 	[Tooltip("Gets the next State information on a specified layer")]
-	[HelpUrl("https://hutonggames.fogbugz.com/default.asp?W1054")]
-	public class GetAnimatorNextStateInfo : FsmStateAction
+	public class GetAnimatorNextStateInfo : FsmStateActionAnimatorBase
 	{
 		[RequiredField]
 		[CheckForComponent(typeof(Animator))]
-		[Tooltip("The target. An Animator component and a PlayMakerAnimatorProxy component are required")]
+		[Tooltip("The target. An Animator component is required")]
 		public FsmOwnerDefault gameObject;
 		
 		[RequiredField]
 		[Tooltip("The layer's index")]
 		public FsmInt layerIndex;
-		
-		[Tooltip("Repeat every frame. Useful when value is subject to change over time.")]
-		public bool everyFrame;
 		
 		[ActionSection("Results")]
 		
@@ -65,13 +61,13 @@ namespace HutongGames.PlayMaker.Actions
 		[UIHint(UIHint.Variable)]
 		[Tooltip("The progress in the current loop. This is extracted from the normalizedTime")]
 		public FsmFloat currentLoopProgress;
-		
-		private PlayMakerAnimatorMoveProxy _animatorProxy;
-		
+
 		private Animator _animator;
 		
 		public override void Reset()
 		{
+			base.Reset();
+
 			gameObject = null;
 			layerIndex = null;
 			
@@ -89,8 +85,7 @@ namespace HutongGames.PlayMaker.Actions
 			isStateLooping = null;
 			loopCount = null;
 			currentLoopProgress = null;
-			
-			everyFrame = false;
+
 		}
 		
 		public override void OnEnter()
@@ -111,14 +106,7 @@ namespace HutongGames.PlayMaker.Actions
 				Finish();
 				return;
 			}
-			
-			_animatorProxy = go.GetComponent<PlayMakerAnimatorMoveProxy>();
-			if (_animatorProxy!=null)
-			{
-				_animatorProxy.OnAnimatorMoveEvent += OnAnimatorMoveEvent;
-			}
-			
-			
+
 			GetLayerInfo();
 			
 			if (!everyFrame) 
@@ -126,21 +114,10 @@ namespace HutongGames.PlayMaker.Actions
 				Finish();
 			}
 		}
-		
-		public void OnAnimatorMoveEvent()
+
+		public override void OnActionUpdate() 
 		{
-			if (_animatorProxy!=null)
-			{
-				GetLayerInfo();
-			}
-		}	
-		
-		public override void OnUpdate() 
-		{
-			if (_animatorProxy==null)
-			{
-				GetLayerInfo();
-			}
+			GetLayerInfo();
 		}
 		
 		void GetLayerInfo()
@@ -150,39 +127,54 @@ namespace HutongGames.PlayMaker.Actions
 				AnimatorStateInfo _info = _animator.GetNextAnimatorStateInfo(layerIndex.Value);
 				
 				#if UNITY_5
-				fullPathHash.Value = _info.fullPathHash;
-				shortPathHash.Value = _info.shortNameHash;
-				nameHash.Value = _info.shortNameHash;
+				if (!fullPathHash.IsNone)
+				{
+					fullPathHash.Value = _info.fullPathHash;
+				}
+				if (!shortPathHash.IsNone)
+				{
+					shortPathHash.Value = _info.shortNameHash;
+				}
+				if (!nameHash.IsNone)
+				{
+					nameHash.Value = _info.shortNameHash;
+				}
 				#else
-				nameHash.Value = _info.nameHash;
+				if (!nameHash.IsNone)
+				{
+					nameHash.Value = _info.nameHash;
+				}
 				#endif
 				
 				if (!name.IsNone)
 				{
 					name.Value = _animator.GetLayerName(layerIndex.Value);	
 				}
-				
-				tagHash.Value = _info.tagHash;
-				length.Value = _info.length;
-				isStateLooping.Value = _info.loop;
-				normalizedTime.Value = _info.normalizedTime;
+
+				if (!tagHash.IsNone)
+				{
+					tagHash.Value = _info.tagHash;
+				}
+				if (!length.IsNone)
+				{
+					length.Value = _info.length;
+				}
+				if (!isStateLooping.IsNone)
+				{
+					isStateLooping.Value = _info.loop;
+				}
+				if (!normalizedTime.IsNone)
+				{
+					normalizedTime.Value = _info.normalizedTime;
+				}
+
 				if (!loopCount.IsNone || !currentLoopProgress.IsNone)
 				{
 					loopCount.Value = (int)System.Math.Truncate(_info.normalizedTime);
 					currentLoopProgress.Value = _info.normalizedTime-loopCount.Value;
 				}
-				
-				
-				
 			}
 		}
-		
-		public override void OnExit()
-		{
-			if (_animatorProxy!=null)
-			{
-				_animatorProxy.OnAnimatorMoveEvent -= OnAnimatorMoveEvent;
-			}
-		}
+
 	}
 }

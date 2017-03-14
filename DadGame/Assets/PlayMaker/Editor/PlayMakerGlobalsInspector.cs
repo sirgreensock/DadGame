@@ -96,12 +96,12 @@ class PlayMakerGlobalsInspector : Editor
 
         if (GUILayout.Button(Strings.Command_Export_Globals))
         {
-            FsmEditorUtility.ExportGlobals();
+            GlobalsAsset.Export();
         }
 
         if (GUILayout.Button(Strings.Command_Import_Globals))
         {
-            FsmEditorUtility.ImportGlobals();
+            GlobalsAsset.Import();
         }
         EditorGUILayout.HelpBox(Strings.Hint_Export_Globals_Notes, MessageType.None);
 	}

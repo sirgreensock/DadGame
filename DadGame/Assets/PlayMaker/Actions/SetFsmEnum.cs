@@ -3,6 +3,7 @@
 namespace HutongGames.PlayMaker.Actions
 {
     [ActionCategory(ActionCategory.StateMachine)]
+    [ActionTarget(typeof(PlayMakerFSM), "gameObject,fsmName")]
     [Tooltip("Set the value of a String Variable in another FSM.")]
     public class SetFsmEnum : FsmStateAction
     {

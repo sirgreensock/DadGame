@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿#if (UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_5_0 || UNITY_5_1 || UNITY_5_2 || UNITY_5_3)
+#define UNITY_PRE_5_4
+#endif
+
+using System.Collections.Generic;
 using System.IO;
-using System.Security.Permissions;
 using UnityEngine;
 using UnityEditor;
 
@@ -31,7 +34,9 @@ namespace HutongGames.PlayMakerEditor
         private static readonly BuildTarget[] standardPlatforms =
         {
             BuildTarget.Android,
+#if UNITY_PRE_5_4
             BuildTarget.BlackBerry,
+#endif
             BuildTarget.StandaloneLinux,
             BuildTarget.StandaloneLinux64,
             BuildTarget.StandaloneLinuxUniversal,
@@ -40,8 +45,10 @@ namespace HutongGames.PlayMakerEditor
             BuildTarget.StandaloneOSXUniversal,
             BuildTarget.StandaloneWindows,
             BuildTarget.StandaloneWindows64,
+#if UNITY_PRE_5_4
             BuildTarget.WebPlayer,
             BuildTarget.WebPlayerStreamed,
+#endif
             BuildTarget.iOS
         };
 

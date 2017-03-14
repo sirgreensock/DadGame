@@ -65,6 +65,8 @@ public class Puppet2D_FFD : Editor
         FFDControlsGrp = new GameObject(Puppet2D_BoneCreation.GetUniqueBoneName("FFD_Ctrls_GRP"));
         Undo.RegisterCreatedObjectUndo(FFDControlsGrp, "undo create FFD");
         ffdStoreData = FFDControlsGrp.AddComponent <Puppet2D_FFDStoreData>();
+        ffdStoreData.OriginalSpritePosition = Puppet2D_Editor.FFDGameObject.transform.position;
+        Puppet2D_Editor.FFDGameObject.transform.position =new Vector3(ffdStoreData.OriginalSpritePosition .x, ffdStoreData.OriginalSpritePosition.y, 0);
         if ((Puppet2D_Editor.FFDGameObject != null) && Puppet2D_Editor.FFDGameObject.GetComponent<PolygonCollider2D>())
         {
             Vector2[] firstPath = Puppet2D_Editor.FFDGameObject.GetComponent<PolygonCollider2D>().GetPath(0);
@@ -216,7 +218,6 @@ public class Puppet2D_FFD : Editor
 		Undo.SetTransformParent (FFDControlsGrp.transform, globalCtrl.transform, "parentToGlobal");
 		Undo.SetTransformParent (newMesh.transform, globalCtrl.transform, "parentToGlobal");
 
-
         List<Object> newObjs = new List<Object>();
         foreach(Transform tr in ffdStoreData.FFDCtrls)
 		{
@@ -231,7 +232,7 @@ public class Puppet2D_FFD : Editor
 		//Undo.RecordObjects (newObjs.ToArray(), "recordingStuff");
 		//Undo.RegisterCompleteObjectUndo (newObjs.ToArray(), "recordingStuff");
         
-		Puppet2D_Skinning.BindSmoothSkin();
+		Puppet2D_Skinning.BindSmoothSkin(1);
 
         for (int i = 0; i < ffdStoreData.FFDCtrls.Count-1; i++)
         {
@@ -252,6 +253,9 @@ public class Puppet2D_FFD : Editor
 
 			}
         }
+        FFDControlsGrp.transform.position = new Vector3( FFDControlsGrp.transform.position.x,  FFDControlsGrp.transform.position.y, ffdStoreData.OriginalSpritePosition.z);
+
+
 		Selection.activeGameObject = ffdStoreData.FFDCtrls [ffdStoreData.FFDCtrls.Count - 1].gameObject;
 		ffdStoreData.FFDCtrls.RemoveAt(ffdStoreData.FFDCtrls.Count-1);
 		Undo.RegisterCompleteObjectUndo (ffdStoreData, "changinEditable");

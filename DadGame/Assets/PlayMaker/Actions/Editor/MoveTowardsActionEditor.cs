@@ -16,7 +16,7 @@ namespace HutongGames.PlayMakerEditor
 
         public override void OnSceneGUI()
         {
-            var moveTowardsAction = (MoveTowards) target;
+            var moveTowardsAction = (HutongGames.PlayMaker.Actions.MoveTowards) target;
 
             if (moveTowardsAction.UpdateTargetPos())
             {

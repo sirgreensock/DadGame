@@ -16,6 +16,11 @@ namespace HutongGames.PlayMaker.Actions
             get { return component as Rigidbody; }
         }
 
+        protected Rigidbody2D rigidbody2d
+        {
+            get { return component as Rigidbody2D; }
+        }
+
         protected Renderer renderer
         {
             get { return component as Renderer; }

@@ -22,20 +22,6 @@ namespace HutongGames.PlayMakerEditor
         public static void OpenWindow()
         {
             GetWindow<FsmEditorWindow>();
-
-            if (!EditorApp.IsSourceCodeVersion)
-            {
-                if (EditorPrefs.GetBool(EditorPrefStrings.ShowWelcomeScreen, true))
-                {
-                    GetWindow<PlayMakerWelcomeWindow>(true);
-                }
-
-                /* Moved to WelcomeWindow.cs
-                if (EditorPrefs.GetBool(EditorPrefStrings.ShowUpgradeGuide, true))
-                {
-                    GetWindow<PlayMakerUpgradeGuide>(true);
-                }*/
-            }
         }
 
         /// <summary>

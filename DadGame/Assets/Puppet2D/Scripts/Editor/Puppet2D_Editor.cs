@@ -22,7 +22,8 @@ public class Puppet2D_Editor : EditorWindow
 	public static bool ChangingRadius = false;
 	public static float paintWeightsStrength =0.25f;
 	public static Color paintControlColor = new Color(.8f,1f,.8f, .5f);
-
+	public bool showLayerSizePanel = true;
+	public string layerSizePanel = "Hide";
 
     public static bool BoneCreation = false;
 	static bool EditSkinWeights = false;
@@ -35,7 +36,7 @@ public class Puppet2D_Editor : EditorWindow
     public bool ReverseNormals ;
 
     public static string _boneSortingLayer,_controlSortingLayer;
-	public static int _boneSortingIndex,_controlSortingIndex, _triangulationIndex, _numberBonesToSkinToIndex = 1;
+    public static int _boneSortingIndex,_controlSortingIndex, _triangulationIndex, _numberBonesToSkinToIndex = 1, _skinningType;
 
 	public static Sprite boneNoJointSprite =new Sprite();
 	public static Sprite boneSprite  =new Sprite();
@@ -58,9 +59,9 @@ public class Puppet2D_Editor : EditorWindow
 	static float ControlSize;
 	static float VertexHandleSize;
 
-	private string pngSequPath = Application.dataPath, checkPath;
+	private string pngSequPath, checkPath;
 	bool recordPngSequence = false;
-	private int imageCount =0, resolution = 1;
+	private int imageCount =0;
 	private float recordDelta = 0f;
     bool ExportPngAlpha;
 
@@ -69,16 +70,16 @@ public class Puppet2D_Editor : EditorWindow
 
 	static public string _puppet2DPath;
 
+    static public bool HasGuides = false;
 
     public enum GUIChoice
     {
-
+        AutoRig,
         BoneCreation,
         RigginSetup,
         Skinning,
         Animation,
-
-
+        About,
     }
     GUIChoice currentGUIChoice;
 
@@ -91,6 +92,7 @@ public class Puppet2D_Editor : EditorWindow
     }
 	void OnEnable() 
 	{
+
 		RecursivelyFindFolderPath ("Assets");
 
 		BoneSize = EditorPrefs.GetFloat("Puppet2D_EditorBoneSize", 0.85f);
@@ -121,6 +123,8 @@ public class Puppet2D_Editor : EditorWindow
         Texture rigTexture = AssetDatabase.LoadAssetAtPath(Puppet2D_Editor._puppet2DPath+"/Textures/GUI/GUI_Rig.png", typeof(Texture))as Texture;
         Texture ControlTexture = AssetDatabase.LoadAssetAtPath(Puppet2D_Editor._puppet2DPath+"/Textures/GUI/parentControl.psd", typeof(Texture))as Texture;
         Texture VertexTexture = AssetDatabase.LoadAssetAtPath(Puppet2D_Editor._puppet2DPath+"/Textures/GUI/VertexHandle.psd", typeof(Texture))as Texture;
+		Texture autoRigTexture = AssetDatabase.LoadAssetAtPath(Puppet2D_Editor._puppet2DPath+"/Textures/GUI/autoRigRobot.png", typeof(Texture))as Texture;
+        Texture autoRigGuidesTexture = AssetDatabase.LoadAssetAtPath(Puppet2D_Editor._puppet2DPath+"/Textures/GUI/autoRigRobotGuides.png", typeof(Texture))as Texture;
 
 
         string[] sortingLayers = GetSortingLayerNames();
@@ -129,7 +133,7 @@ public class Puppet2D_Editor : EditorWindow
         if (currentGUIChoice == GUIChoice.BoneCreation)
             GUI.backgroundColor = Color.green;
 
-        if (GUI.Button(new Rect(0, 0, 80, 20),"Skeleton" ))
+        if (GUI.Button(new Rect(0, 0, 100, 20),"Skeleton" ))
         {
             currentGUIChoice = GUIChoice.BoneCreation;
         }
@@ -138,7 +142,7 @@ public class Puppet2D_Editor : EditorWindow
         if (currentGUIChoice == GUIChoice.RigginSetup)
             GUI.backgroundColor = Color.green;
 
-        if (GUI.Button(new Rect(80, 0, 80, 20),"Rigging" ))
+        if (GUI.Button(new Rect(100, 0, 100, 20),"Rigging" ))
         {
             currentGUIChoice = GUIChoice.RigginSetup;
         }
@@ -146,7 +150,7 @@ public class Puppet2D_Editor : EditorWindow
         if (currentGUIChoice == GUIChoice.Skinning)
             GUI.backgroundColor = Color.green;
 
-        if (GUI.Button(new Rect(160, 0, 80, 20),"Skinning" ))
+        if (GUI.Button(new Rect(200, 0, 100, 20),"Skinning" ))
         {
             currentGUIChoice = GUIChoice.Skinning;
         }
@@ -154,65 +158,95 @@ public class Puppet2D_Editor : EditorWindow
         if (currentGUIChoice == GUIChoice.Animation)
             GUI.backgroundColor = Color.green;
 
-        if (GUI.Button(new Rect(240, 0, 80, 20),"Animation" ))
+        if (GUI.Button(new Rect(0, 20, 100, 20),"Animation" ))
         {
             currentGUIChoice = GUIChoice.Animation;
         }
         GUI.backgroundColor = bgColor;
 
+        if (currentGUIChoice == GUIChoice.AutoRig)
+            GUI.backgroundColor = Color.green;        
+        if (GUI.Button(new Rect(100, 20, 100, 20),"Auto Rig" ))
+        {
+            currentGUIChoice = GUIChoice.AutoRig;
+        }
+        GUI.backgroundColor = bgColor;
+        if (currentGUIChoice == GUIChoice.About)
+            GUI.backgroundColor = Color.green;        
+        if (GUI.Button(new Rect(200, 20, 100, 20),"About" ))
+        {
+            currentGUIChoice = GUIChoice.About;
+        }
+        GUI.backgroundColor = bgColor;
+
+
         if (EditSkinWeights || SplineCreation || FFDCreation )
             GUI.backgroundColor = Color.grey;
 
+		showLayerSizePanel = EditorGUI.Foldout(new Rect(5, 40, 15, 15), showLayerSizePanel, layerSizePanel);
+		int offsetControls = 130;
 
-        GUI.DrawTexture(new Rect(25, 40, 32, 32), boneSprite.texture, ScaleMode.StretchToFill, true, 10.0F);
+		if (showLayerSizePanel)
+		{	
 
-        EditorGUI.BeginChangeCheck ();
-        BoneSize = EditorGUI.Slider(new Rect(80, 40, 150, 20), BoneSize, 0F, 0.9999F);
-        if (EditorGUI.EndChangeCheck())
-        {
-            ChangeBoneSize();
-            EditorPrefs.SetFloat("Puppet2D_EditorBoneSize", BoneSize);
-        }
-        EditorGUI.BeginChangeCheck ();
-        _boneSortingIndex = EditorGUI.Popup(new Rect(80, 60, 150, 30), _boneSortingIndex, sortingLayers);
-        if (EditorGUI.EndChangeCheck())
-        {
-            EditorPrefs.SetInt("Puppet2D_BoneLayer", _boneSortingIndex);
-        }
-        if (sortingLayers.Length <= _boneSortingIndex)
-        {
-            _boneSortingIndex = 0;
-            EditorPrefs.SetInt("Puppet2D_BoneLayer", _boneSortingIndex);
-        }
-        _boneSortingLayer = sortingLayers[_boneSortingIndex];
+			offsetControls = 130;
+			layerSizePanel = "Close";
+	        GUI.DrawTexture(new Rect(25, 60, 32, 32), boneSprite.texture, ScaleMode.StretchToFill, true, 10.0F);
 
-
-        GUI.DrawTexture(new Rect(25, 100, 32, 32), ControlTexture, ScaleMode.StretchToFill, true, 10.0F);
-
-        EditorGUI.BeginChangeCheck ();
-        ControlSize = EditorGUI.Slider(new Rect(80, 100, 150, 20), ControlSize, 0F, .9999F);
-        if (EditorGUI.EndChangeCheck())
-        {
-            ChangeControlSize();
-            EditorPrefs.SetFloat("Puppet2D_EditorControlSize", ControlSize);
-        }
-        EditorGUI.BeginChangeCheck ();
-        _controlSortingIndex = EditorGUI.Popup(new Rect(80, 130, 150, 30), _controlSortingIndex, sortingLayers);
-        if (EditorGUI.EndChangeCheck())
-        {
-            EditorPrefs.SetInt("Puppet2D_ControlLayer", _controlSortingIndex);
-        }
-        if (sortingLayers.Length <= _controlSortingIndex)
-        {
-            _controlSortingIndex = 0;
-            EditorPrefs.SetInt("Puppet2D_ControlLayer", _controlSortingIndex);
-        }
-        _controlSortingLayer = sortingLayers[_controlSortingIndex];
+	        EditorGUI.BeginChangeCheck ();
+	        BoneSize = EditorGUI.Slider(new Rect(80, 60, 150, 20), BoneSize, 0F, 0.9999F);
+	        if (EditorGUI.EndChangeCheck())
+	        {
+	            ChangeBoneSize();
+	            EditorPrefs.SetFloat("Puppet2D_EditorBoneSize", BoneSize);
+	        }
+	        EditorGUI.BeginChangeCheck ();
+	        _boneSortingIndex = EditorGUI.Popup(new Rect(80, 90, 150, 30), _boneSortingIndex, sortingLayers);
+	        if (EditorGUI.EndChangeCheck())
+	        {
+	            EditorPrefs.SetInt("Puppet2D_BoneLayer", _boneSortingIndex);
+	        }
+	        if (sortingLayers.Length <= _boneSortingIndex)
+	        {
+	            _boneSortingIndex = 0;
+	            EditorPrefs.SetInt("Puppet2D_BoneLayer", _boneSortingIndex);
+	        }
+	        _boneSortingLayer = sortingLayers[_boneSortingIndex];
 
 
-        GUI.DrawTexture(new Rect(15, 160, 275, 5), aTexture, ScaleMode.StretchToFill, true, 10.0F);
+	        GUI.DrawTexture(new Rect(25, 110, 32, 32), ControlTexture, ScaleMode.StretchToFill, true, 10.0F);
 
-        int offsetControls = 130;
+	        EditorGUI.BeginChangeCheck ();
+	        ControlSize = EditorGUI.Slider(new Rect(80, 120, 150, 20), ControlSize, 0F, .9999F);
+	        if (EditorGUI.EndChangeCheck())
+	        {
+	            ChangeControlSize();
+	            EditorPrefs.SetFloat("Puppet2D_EditorControlSize", ControlSize);
+	        }
+	        EditorGUI.BeginChangeCheck ();
+	        _controlSortingIndex = EditorGUI.Popup(new Rect(80, 150, 150, 30), _controlSortingIndex, sortingLayers);
+	        if (EditorGUI.EndChangeCheck())
+	        {
+	            EditorPrefs.SetInt("Puppet2D_ControlLayer", _controlSortingIndex);
+	        }
+	        if (sortingLayers.Length <= _controlSortingIndex)
+	        {
+	            _controlSortingIndex = 0;
+	            EditorPrefs.SetInt("Puppet2D_ControlLayer", _controlSortingIndex);
+	        }
+	        _controlSortingLayer = sortingLayers[_controlSortingIndex];
+
+
+	        //GUI.DrawTexture(new Rect(15, 160, 275, 5), aTexture, ScaleMode.StretchToFill, true, 10.0F);
+		}
+		else
+		{
+			layerSizePanel = "Open";
+			offsetControls = 30;
+		}
+		GUILayout.Space(offsetControls+50);		
+		GUILayout.Box("", new GUILayoutOption[]{GUILayout.ExpandWidth(true), GUILayout.Height(1)});
+
 
         if (currentGUIChoice == GUIChoice.BoneCreation)
         {
@@ -290,11 +324,10 @@ public class Puppet2D_Editor : EditorWindow
                 Puppet2D_CreateControls.CreateOrientControl();
 
             }
-			/*if (GUI.Button(new Rect(80, 160+offsetControls, 150, 30), "Create Avatar"))
-			{
-                Puppet2D_CreateControls.CreateAvatar();
 
-			}*/
+			GUI.DrawTexture(new Rect(15, 200+offsetControls, 275, 5), aTexture, ScaleMode.StretchToFill, true, 10.0F);
+
+			
 
         }
         if (currentGUIChoice == GUIChoice.Skinning)
@@ -303,7 +336,7 @@ public class Puppet2D_Editor : EditorWindow
 
             GUI.DrawTexture(new Rect(0, 50+offsetControls, 64, 128), puppetManTexture, ScaleMode.StretchToFill, true, 10.0F);
 
-            GUILayout.Space(55+offsetControls);
+            GUILayout.Space(5);
             GUIStyle labelNew = EditorStyles.label;
             labelNew.alignment = TextAnchor.LowerLeft;
             labelNew.contentOffset = new Vector2(80, 0);
@@ -323,7 +356,7 @@ public class Puppet2D_Editor : EditorWindow
                 Puppet2D_Skinning.BindRigidSkin();
 
             }
-            GUILayout.Space(75);
+            GUILayout.Space(70);
             labelNew.alignment = TextAnchor.LowerLeft;
             labelNew.contentOffset = new Vector2(80, 0);
             GUILayout.Label("Num Skin Bones: ", labelNew);
@@ -332,18 +365,29 @@ public class Puppet2D_Editor : EditorWindow
 
             _numberBonesToSkinToIndex = EditorGUI.Popup(new Rect(180, 150+offsetControls, 50, 30), _numberBonesToSkinToIndex, NumberBonesToSkinTo);
 
-            if (GUI.Button(new Rect(80, 170+offsetControls, 150, 30), "Bind Smooth Skin"))
+            if (GUI.Button(new Rect(80, 200+offsetControls, 150, 30), "Bind Smooth Skin"))
             {
-                Puppet2D_Skinning.BindSmoothSkin();
-
+                if(_numberBonesToSkinToIndex==1)
+                    Puppet2D_Skinning.BindSmoothSkin(_skinningType);
+                else
+                    Puppet2D_Skinning.BindSmoothSkin(1);
             }
             if (EditSkinWeights ||SkinWeightsPaint )
             {
                 GUI.backgroundColor = Color.green;
             }
+            string[] SkinningTypeChoice = { "Heat Map", "Closest Point" };
+            GUILayout.Space(10);
+            labelNew.alignment = TextAnchor.LowerLeft;
+            labelNew.contentOffset = new Vector2(80, 0);
+            GUILayout.Label("Skinning: ", labelNew);
+            labelNew.contentOffset = new Vector2(0, 0);
+            _skinningType   = EditorGUI.Popup(new Rect(140, 175+offsetControls, 90, 30), _skinningType, SkinningTypeChoice);
+
+
             if (SkinWeightsPaint)
             {   
-                if (GUI.Button(new Rect(80, 200+offsetControls, 150, 30), "Manually Edit Weights"))
+                if (GUI.Button(new Rect(80, 230+offsetControls, 150, 30), "Manually Edit Weights"))
                 {
                     // finish paint weights
                     Selection.activeGameObject = currentSelection;
@@ -365,7 +409,7 @@ public class Puppet2D_Editor : EditorWindow
             }
             if (!SkinWeightsPaint)
             {
-                if (GUI.Button(new Rect(80, 200 + offsetControls, 150, 30), "Paint Weights"))
+                if (GUI.Button(new Rect(80, 230 + offsetControls, 150, 30), "Paint Weights"))
                 {   
                     if (EditSkinWeights)
                     {
@@ -390,7 +434,7 @@ public class Puppet2D_Editor : EditorWindow
                             EditorUtility.SetDirty(currentSelection);
                             EditorUtility.SetDirty(currentSelectionMesh);
                             AssetDatabase.SaveAssets();
-                            EditorApplication.SaveAssets();
+                            AssetDatabase.SaveAssets();
                         }
 						else
 							previousVertColors = currentSelectionMesh.colors;
@@ -404,7 +448,7 @@ public class Puppet2D_Editor : EditorWindow
             if (EditSkinWeights || SkinWeightsPaint)
                 GUI.backgroundColor = bgColor;
 
-            if (GUI.Button(new Rect(80, 230+offsetControls, 150, 30), "Finish Edit Skin Weights"))
+            if (GUI.Button(new Rect(80, 260+offsetControls, 150, 30), "Finish Edit Skin Weights"))
             {   
                 if (SkinWeightsPaint)
                 {
@@ -446,9 +490,9 @@ public class Puppet2D_Editor : EditorWindow
             if (EditSkinWeights)
             {
                 SkinWeightsPaintOffset = -40;
-                GUI.DrawTexture(new Rect(25, 260 + offsetControls, 32, 32), VertexTexture, ScaleMode.StretchToFill, true, 10.0F);
+                GUI.DrawTexture(new Rect(25, 290 + offsetControls, 32, 32), VertexTexture, ScaleMode.StretchToFill, true, 10.0F);
                 EditorGUI.BeginChangeCheck();
-                VertexHandleSize = EditorGUI.Slider(new Rect(80, 270 + offsetControls, 150, 20), VertexHandleSize, 0F, .9999F);
+                VertexHandleSize = EditorGUI.Slider(new Rect(80, 310 + offsetControls, 150, 20), VertexHandleSize, 0F, .9999F);
                 if (EditorGUI.EndChangeCheck())
                 {
                     ChangeVertexHandleSize();
@@ -461,9 +505,9 @@ public class Puppet2D_Editor : EditorWindow
 
                 GUILayout.Space(offsetControls - 20);
                 GUILayout.Label(" Brush Size", EditorStyles.boldLabel);
-                EditSkinWeightRadius = EditorGUI.Slider(new Rect(80, 275 + offsetControls, 150, 20), EditSkinWeightRadius, 0F, 100F);
+                EditSkinWeightRadius = EditorGUI.Slider(new Rect(80, 305 + offsetControls, 150, 20), EditSkinWeightRadius, 0F, 100F);
                 GUILayout.Label(" Strength", EditorStyles.boldLabel);
-                paintWeightsStrength = EditorGUI.Slider(new Rect(80, 295 + offsetControls, 150, 20), paintWeightsStrength, 0F, 1F);
+                paintWeightsStrength = EditorGUI.Slider(new Rect(80, 335 + offsetControls, 150, 20), paintWeightsStrength, 0F, 1F);
             }
 
             if (EditSkinWeights ||SkinWeightsPaint )
@@ -472,7 +516,7 @@ public class Puppet2D_Editor : EditorWindow
             if (FFDCreation)
                 GUI.backgroundColor = Color.green;
 
-            if (GUI.Button(new Rect(80, 360+offsetControls+SkinWeightsPaintOffset, 150, 30), "Create FFD Tool"))
+            if (GUI.Button(new Rect(80, 390+offsetControls+SkinWeightsPaintOffset, 150, 30), "Create FFD Tool"))
             {   
 //				if (FindObjectOfType<Puppet2D_FFDStoreData> () == null)
 //					FFDCreation = false;
@@ -526,6 +570,7 @@ public class Puppet2D_Editor : EditorWindow
 					}
 
 				}
+				
 
 
 				if (FindObjectOfType<Puppet2D_FFDStoreData> () == null)				
@@ -560,9 +605,13 @@ public class Puppet2D_Editor : EditorWindow
 				}
 
             }
+            if (GUI.Button (new Rect (80, 470 + offsetControls + SkinWeightsPaintOffset, 150, 30), "Sort Bones")) 
+            {
+                Puppet2D_Skinning.SortVertices ();
+            }
             if (FFDCreation)
                 GUI.backgroundColor = bgColor;
-            if (GUI.Button(new Rect(80, 390+offsetControls+SkinWeightsPaintOffset, 150, 30), "Finish FFD"))
+            if (GUI.Button(new Rect(80, 420+offsetControls+SkinWeightsPaintOffset, 150, 30), "Finish FFD"))
             {   
 				FFDCreation = false;
                 Puppet2D_FFD.FFDFinishCreation();
@@ -573,7 +622,7 @@ public class Puppet2D_Editor : EditorWindow
         {
             //GUILayout.Label("Animation", EditorStyles.boldLabel);
 
-            if (GUI.Button(new Rect(80, 50+offsetControls, 150, 30), "Bake Animation"))
+            if (GUI.Button(new Rect(80, 60+offsetControls, 150, 30), "Bake Animation"))
             {   
                 Puppet2D_GlobalControl[] globalCtrlScripts = Transform.FindObjectsOfType<Puppet2D_GlobalControl>();
                 for (int i = 0; i < globalCtrlScripts.Length; i++)
@@ -586,7 +635,7 @@ public class Puppet2D_Editor : EditorWindow
             }
 			if(recordPngSequence && !ExportPngAlpha)
 				GUI.backgroundColor = Color.green;
-            if (GUI.Button(new Rect(80, 100+offsetControls, 150, 30), "Render Animation"))
+            if (GUI.Button(new Rect(80, 130+offsetControls, 150, 30), "Render Animation"))
 			{
 				checkPath = EditorUtility.SaveFilePanel("Choose Directory", pngSequPath, "exportedAnim", "");
 				if(checkPath != "")
@@ -597,19 +646,7 @@ public class Puppet2D_Editor : EditorWindow
 				}
             }
             GUI.backgroundColor = bgColor;
-			if(ExportPngAlpha )
-				GUI.backgroundColor = Color.green;
-            if (GUI.Button(new Rect(80, 130+offsetControls, 150, 30), "Render Alpha"))
-            {
-                checkPath = EditorUtility.SaveFilePanel("Choose Directory", pngSequPath, "exportedAnim", "");
-                if(checkPath != "")
-                {
-                    pngSequPath = checkPath;
-                    recordPngSequence = true;
-                    ExportPngAlpha = true;
-                    EditorApplication.ExecuteMenuItem("Edit/Play");
-                }
-            }
+
 			if (ExportPngAlpha || recordPngSequence)
 				GUI.backgroundColor = bgColor;
             if(GUI.Button(new Rect(80, 200 + offsetControls, 150, 30), "Save Selection"))
@@ -671,8 +708,43 @@ public class Puppet2D_Editor : EditorWindow
 
 
         }
+        if (currentGUIChoice == GUIChoice.AutoRig)
+        {
 
 
+
+            if(!HasGuides)
+                GUI.DrawTexture(new Rect(20, 90+offsetControls, 256, 256), autoRigTexture, ScaleMode.StretchToFill, true, 10.0F);
+            else
+                GUI.DrawTexture(new Rect(20, 90+offsetControls, 256, 256), autoRigGuidesTexture, ScaleMode.StretchToFill, true, 10.0F);
+
+
+
+            if (GUI.Button(new Rect(80, 70+offsetControls, 150, 30), "Make Guides"))
+            {
+                Puppet2D_AutoRig.MakeGuides();
+                HasGuides = true;
+            }
+            if (GUI.Button(new Rect(80, 350+offsetControls, 150, 30), "Auto Rig"))
+            {
+                Puppet2D_AutoRig.AutoRig();
+				ControlSize = 0.96f;
+				ChangeControlSize();
+                HasGuides = false;
+
+                
+            }
+            if (GUI.Button(new Rect(80, 400+offsetControls, 150, 30), "Get More Animations..."))
+            {
+				Application.OpenURL("http://www.puppet2d.com/animationpacks/");
+                
+            }
+        }
+        if (currentGUIChoice == GUIChoice.About)
+        {
+            GUILayout.Space( 30);
+            GUILayout.Label("    Puppet2D by Puppetman.\n\n    Version 3.0", EditorStyles.boldLabel);
+        }
     }
 	void OnFocus() {
 
@@ -1251,21 +1323,7 @@ public class Puppet2D_Editor : EditorWindow
 			{ 
 				imageCount++;
 
-
-                if (ExportPngAlpha)
-                {
-                    Shader newshad = Shader.Find("Puppet2D/BlackAndWhite");
-                    Camera.main.SetReplacementShader(newshad, null);
-                    Camera.main.backgroundColor = Color.black;
-
-                    Application.CaptureScreenshot(pngSequPath + "_Alpha." + imageCount.ToString("D4") + ".png", resolution); 
-                }
-                else
-                {
-                    Application.CaptureScreenshot(pngSequPath + "." + imageCount.ToString("D4") + ".png", resolution); 
-                }
-
- 
+				SaveScreenshotToFile(pngSequPath + "." + imageCount.ToString("D4") + ".png");
 
 				recordDelta = 0f;
 			}
@@ -1280,6 +1338,42 @@ public class Puppet2D_Editor : EditorWindow
 		}
 
 
+	}
+	public static Texture2D TakeScreenShot()
+	{
+		return Screenshot ();
+	}
+	
+	static Texture2D Screenshot() {
+        if (Camera.main == null)
+        {
+            Debug.LogWarning("Need a main camera in the scene");
+            return null;
+        }
+		int resWidth = Camera.main.pixelWidth;
+		int resHeight = Camera.main.pixelHeight;
+		Camera camera = Camera.main;
+		RenderTexture rt = new RenderTexture(resWidth, resHeight, 32);
+		camera.targetTexture = rt;
+		Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.ARGB32, false);
+		camera.Render();
+		RenderTexture.active = rt;
+		screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
+		screenShot.Apply ();
+		camera.targetTexture = null;
+		RenderTexture.active = null; // JC: added to avoid errors
+		Destroy(rt);
+		return screenShot;
+	}
+	
+	public static Texture2D SaveScreenshotToFile(string fileName)
+	{
+		Texture2D screenShot = Screenshot ();
+		byte[] bytes = screenShot.EncodeToPNG();
+        Debug.Log("Saving " + fileName);
+
+		System.IO.File.WriteAllBytes(fileName, bytes);
+		return screenShot;
 	}
 
 }

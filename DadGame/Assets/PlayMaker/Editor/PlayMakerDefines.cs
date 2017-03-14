@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
 namespace HutongGames.PlayMakerEditor
 {
@@ -16,7 +17,14 @@ namespace HutongGames.PlayMakerEditor
         static PlayMakerDefines()
         {
             AddScriptingDefineSymbolToAllTargets("PLAYMAKER");
+
             AddScriptingDefineSymbolToAllTargets("PLAYMAKER_1_8");
+            AddScriptingDefineSymbolToAllTargets("PLAYMAKER_1_8_3");
+            AddScriptingDefineSymbolToAllTargets("PLAYMAKER_1_8_OR_NEWER");
+            
+            RemoveScriptingDefineSymbolFromAllTargets("PLAYMAKER_1_8_0");
+            RemoveScriptingDefineSymbolFromAllTargets("PLAYMAKER_1_8_1");
+            RemoveScriptingDefineSymbolFromAllTargets("PLAYMAKER_1_8_2");
         }
 
         public static void AddScriptingDefineSymbolToAllTargets(string defineSymbol)
@@ -29,7 +37,16 @@ namespace HutongGames.PlayMakerEditor
                 if (!defineSymbols.Contains(defineSymbol))
                 {
                     defineSymbols.Add(defineSymbol);
-                    PlayerSettings.SetScriptingDefineSymbolsForGroup(group, string.Join(";", defineSymbols.ToArray()));
+                    try
+                    {
+                        PlayerSettings.SetScriptingDefineSymbolsForGroup(group, string.Join(";", defineSymbols.ToArray()));
+                    }
+                    catch (Exception)
+                    {
+                        Debug.Log("Could not set PLAYMAKER defines for build target group: " + group);
+                        throw;
+                    }
+                    
                 }
             }
         }
@@ -51,13 +68,29 @@ namespace HutongGames.PlayMakerEditor
 
         private static bool IsValidBuildTargetGroup(BuildTargetGroup group)
         {
-            if (group == BuildTargetGroup.Unknown) return false;
+            if (group == BuildTargetGroup.Unknown || IsObsolete(group)) return false;
 
-            #if UNITY_5_3_0  // Unity 5.3.0 had tvOS in enum but throws error if used
+            // Checking Obsolete attribute should be enough, 
+            // but sometimes Unity versions are missing attributes
+            // so keeping these checks around just in case:
+
+#if UNITY_5_3_0 // Unity 5.3.0 had tvOS in enum but throws error if used
             if ((int)(object)group == 25) return false;
-            #endif
+#endif
+
+#if UNITY_5_4 || UNITY_5_5 // Unity 5.4+ doesn't like Wp8 and Blackberry any more
+            if ((int)(object)group == 15) return false;
+            if ((int)(object)group == 16) return false;
+#endif
 
             return true;
+        }
+
+        private static bool IsObsolete(Enum value)
+        {
+            var fi = value.GetType().GetField(value.ToString());
+            var attributes = (ObsoleteAttribute[]) fi.GetCustomAttributes(typeof(ObsoleteAttribute), false);
+            return attributes.Length > 0;
         }
     }
 }

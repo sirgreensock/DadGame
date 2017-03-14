@@ -52,7 +52,7 @@ public class Puppet2D_IKHandle: MonoBehaviour
 
 	public bool limitBones = true;
 
-
+    public Quaternion Offset = Quaternion.identity;
     /*
 	void LateUpdate () 
     {
@@ -118,7 +118,7 @@ public class Puppet2D_IKHandle: MonoBehaviour
 			}
 	        middleJointTransform.rotation = Quaternion.LookRotation(IK_CTRL.position - middleJointTransform.position, AimDirection) * Quaternion.AngleAxis(90, UpDirection);
 
-	        bottomJointTransform.rotation = IK_CTRL.rotation;
+	        bottomJointTransform.rotation = IK_CTRL.rotation*Offset;
 			if(Scale)
 				bottomJointTransform.localScale = new Vector3(IK_CTRL.localScale.x*OffsetScale.x, IK_CTRL.localScale.y*OffsetScale.y, IK_CTRL.localScale.z*OffsetScale.z);
 

@@ -1,6 +1,5 @@
 // (c) Copyright HutongGames, LLC 2010-2013. All rights reserved.
 
-using System;
 using UnityEngine;
 
 namespace HutongGames.PlayMaker.Actions
@@ -49,6 +48,13 @@ namespace HutongGames.PlayMaker.Actions
                 case CollisionType.OnCollisionExit:
                     Fsm.HandleCollisionExit = true;
                     break;
+                case CollisionType.OnControllerColliderHit:
+                    Fsm.HandleControllerColliderHit = true;
+                    break;
+                case CollisionType.OnParticleCollision:
+                    Fsm.HandleParticleCollision = true;
+                    break;
+
             }
 
 	    }
@@ -109,6 +115,21 @@ namespace HutongGames.PlayMaker.Actions
 				}
 			}
 		}
+
+	    public override void DoParticleCollision(GameObject other)
+	    {
+	        if (collision == CollisionType.OnParticleCollision)
+	        {
+                if (other.tag == collideTag.Value)
+                {
+                    if (storeCollider != null)
+                        storeCollider.Value = other;
+
+                    storeForce.Value = 0f; //TODO: impact force?
+                    Fsm.Event(sendEvent);
+                }            
+	        }
+	    }
 
 		public override string ErrorCheck()
 		{

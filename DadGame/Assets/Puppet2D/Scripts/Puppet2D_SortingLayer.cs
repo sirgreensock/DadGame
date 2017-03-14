@@ -12,6 +12,8 @@ public class Puppet2D_SortingLayer : MonoBehaviour {
 	public Vector2[] uvsDefault;
 	[HideInInspector]
 	public bool initialized = false;
+    [HideInInspector]
+    public Bounds bounds;
 //	public Material[] swappedMaterials;
 //	[HideInInspector]
 //	public int swappedMaterialIndex = 0;

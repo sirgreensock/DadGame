@@ -1,19 +1,18 @@
 // (c) copyright Hutong Games, LLC 2010-2012. All rights reserved.
 
-using System;
-
 namespace HutongGames.PlayMaker.Actions
 {
     [ActionCategory(ActionCategory.StateMachine)]
     [Note("Kill all queued delayed events.")]
-    [Tooltip("Kill all queued delayed events. Delayed events are 'fire and forget', but sometimes this can cause problems.")]
-    [Obsolete("This action is obsolete as of 1.8.0. Delayed events are now cleared when a state exits.")]
+    [Tooltip("Kill all queued delayed events. " +
+             "Normally delayed events are automatically killed when the active state is exited, " +
+             "but you can override this behaviour in FSM settings. " +
+             "If you choose to keep delayed events you can use this action to kill them when needed.")]
     public class KillDelayedEvents : FsmStateAction
     {
         public override void OnEnter()
         {
-            Fsm.KillDelayedEvents();
-            
+            Fsm.KillDelayedEvents();           
             Finish();
         }
     }
