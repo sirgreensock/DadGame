@@ -30,11 +30,9 @@ namespace HutongGames.PlayMaker.Actions
 		public FsmBool isContained;
 
 		[Tooltip("Event sent if the array contains that element (described below)")]
-		[UIHint(UIHint.FsmEvent)]
 		public FsmEvent isContainedEvent;
 
 		[Tooltip("Event sent if the array does not contains that element (described below)")]
-		[UIHint(UIHint.FsmEvent)]
 		public FsmEvent isNotContainedEvent;
 
 		public override void Reset ()

@@ -25,8 +25,7 @@ Shader "Puppet2D/BlackAndWhite"
  
          struct vertexInput {
             float4 vertex : POSITION;
-            float4 texcoord : TEXCOORD0;
-            float4 vertColor : COLOR;
+            float2 texcoord : TEXCOORD0;
          };
          struct vertexOutput {
             float4 pos : SV_POSITION;
@@ -51,7 +50,7 @@ Shader "Puppet2D/BlackAndWhite"
             
             fixed4 c = tex2D(_MainTex,input.uv);
 
-            return float4(float3(1),c.a); 
+            return float4(1,1,1,c.a); 
 
          }
  

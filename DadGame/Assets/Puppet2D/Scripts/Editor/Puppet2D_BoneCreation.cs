@@ -37,7 +37,7 @@ public class Puppet2D_BoneCreation : Editor {
 		{
 			foreach(Puppet2D_HiddenBone hiddenBone in hiddenBones)
 			{
-				if (hiddenBone.transform.parent.parent == null)
+				if (hiddenBone && hiddenBone.transform.parent&& hiddenBone.transform.parent.parent == null)
 					hiddenBone.transform.parent.parent = globalCtrl.transform;
 			}
 		}
@@ -45,7 +45,7 @@ public class Puppet2D_BoneCreation : Editor {
 
     }
     [MenuItem ("GameObject/Puppet2D/Skeleton/Create Bone Tool")]
-    static void CreateBoneTool()
+	public static void CreateBoneTool()
     {    
         Puppet2D_Editor.BoneCreation = true;
         EditorPrefs.SetBool("Puppet2D_BoneCreation", true);
@@ -270,7 +270,8 @@ public class Puppet2D_BoneCreation : Editor {
             spriteRendererInvisbile.sortingLayerName = Puppet2D_Editor._boneSortingLayer;
             spriteRendererInvisbile.sprite = Puppet2D_Editor.boneHiddenSprite;
             newInvisibleBone.transform.parent = Selection.activeGameObject.transform;
-            Puppet2D_HiddenBone hiddenBoneComp = newInvisibleBone.AddComponent<Puppet2D_HiddenBone>();
+            Undo.AddComponent(newInvisibleBone, typeof(Puppet2D_HiddenBone));
+            Puppet2D_HiddenBone hiddenBoneComp = newInvisibleBone.GetComponent<Puppet2D_HiddenBone>();
             hiddenBoneComp.boneToAimAt = newBone.transform;
             hiddenBoneComp.Refresh();
 

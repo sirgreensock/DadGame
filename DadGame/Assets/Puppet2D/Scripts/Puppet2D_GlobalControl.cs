@@ -117,38 +117,40 @@ public class Puppet2D_GlobalControl : MonoBehaviour {
 	}
 	void OnValidate ()
 	{
+        UpdateVisibility();
+	}
 
-
+    public void UpdateVisibility()
+    {
         if (AutoRefresh)
         {
             _Ikhandles.Clear();
-			_SplineControls.Clear();
+            _SplineControls.Clear();
             _ParentControls.Clear();
             _Controls.Clear();
             _Bones.Clear();
             _FFDControls.Clear();
             _ffdControls.Clear();
             TraverseHierarchy(transform);
-			InitializeArrays ();
+            InitializeArrays();
         }
-		foreach(SpriteRenderer ctrl in _Controls)
-		{
-			if(ctrl && ctrl.enabled != ControlsVisiblity)
-				ctrl.enabled = ControlsVisiblity;
-		}
-		foreach(SpriteRenderer bone in _Bones)
-		{
-			if(bone && bone.enabled != BonesVisiblity)
-				bone.enabled = BonesVisiblity;
-		}
-        foreach(SpriteRenderer ffdCtrl in _FFDControls)
+        foreach (SpriteRenderer ctrl in _Controls)
         {
-			if(ffdCtrl && ffdCtrl.transform.parent &&  ffdCtrl.transform.parent.gameObject && ffdCtrl.transform.parent.gameObject.activeSelf != FFD_Visiblity)
-				ffdCtrl.transform.parent.gameObject.SetActive(FFD_Visiblity);
+            if (ctrl && ctrl.enabled != ControlsVisiblity)
+                ctrl.enabled = ControlsVisiblity;
         }
+        foreach (SpriteRenderer bone in _Bones)
+        {
+            if (bone && bone.enabled != BonesVisiblity)
+                bone.enabled = BonesVisiblity;
+        }
+        foreach (SpriteRenderer ffdCtrl in _FFDControls)
+        {
+            if (ffdCtrl && ffdCtrl.transform.parent && ffdCtrl.transform.parent.gameObject && ffdCtrl.transform.parent.gameObject.activeSelf != FFD_Visiblity)
+                ffdCtrl.transform.parent.gameObject.SetActive(FFD_Visiblity);
+        }
+    }
 
-
-	}
 	void Update () 
 	{
         if (!lateUpdate)

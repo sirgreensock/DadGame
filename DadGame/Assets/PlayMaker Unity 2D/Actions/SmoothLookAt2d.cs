@@ -1,5 +1,4 @@
-﻿// (c) Copyright HutongGames, LLC 2010-2014. All rights reserved.
-//--- __ECO__ __ACTION__ ---//
+﻿// (c) Copyright HutongGames, LLC 2010-2016. All rights reserved.
 
 using UnityEngine;
 
@@ -86,7 +85,7 @@ namespace HutongGames.PlayMaker.Actions
 			
 			// desired look at position
 
-			Vector3 lookAtPos = new Vector3(targetPosition2d.Value.x,targetPosition2d.Value.y,0f);
+			var lookAtPos = new Vector3(targetPosition2d.Value.x,targetPosition2d.Value.y,0f);
 			if (!targetPosition.IsNone)
 			{
 				lookAtPos += targetPosition.Value;
@@ -95,7 +94,7 @@ namespace HutongGames.PlayMaker.Actions
 			if (goTarget != null)
 			{
 				lookAtPos = goTarget.transform.position;
-				Vector3 _offset = Vector3.zero;
+				var _offset = Vector3.zero;
 
 				if (!targetPosition.IsNone)
 				{
@@ -113,11 +112,11 @@ namespace HutongGames.PlayMaker.Actions
 				}
 			}
 		
-			Vector3 diff = lookAtPos - go.transform.position;
+			var diff = lookAtPos - go.transform.position;
 			diff.Normalize();
 			
 			
-			float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+			var rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
 			desiredRotation = Quaternion.Euler(0f, 0f, rot_z - rotationOffset.Value);
 
 

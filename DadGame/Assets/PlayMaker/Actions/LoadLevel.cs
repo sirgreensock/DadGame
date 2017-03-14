@@ -31,6 +31,9 @@ namespace HutongGames.PlayMaker.Actions
         [Tooltip("Keep this GameObject in the new level. NOTE: The GameObject and components is disabled then enabled on load; uncheck Reset On Disable to keep the active state.")]
         public FsmBool dontDestroyOnLoad;
 
+        [Tooltip("Event to send if the level cannot be loaded.")]
+        public FsmEvent failedEvent;
+
         private AsyncOperation asyncOperation;
 
         public override void Reset()
@@ -44,12 +47,17 @@ namespace HutongGames.PlayMaker.Actions
 
         public override void OnEnter()
         {
+            if (!Application.CanStreamedLevelBeLoaded(levelName.Value))
+            {
+                Fsm.Event(failedEvent);
+                Finish();
+                return;
+            }
+
             if (dontDestroyOnLoad.Value)
             {
                 // Have to get the root, since this FSM will be destroyed if a parent is destroyed.
-
                 var root = Owner.transform.root;
-
                 Object.DontDestroyOnLoad(root.gameObject);
             }
 

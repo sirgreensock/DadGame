@@ -1,4 +1,6 @@
-﻿Shader "Line2D/AlphaBlendSmokeColumn" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "Line2D/AlphaBlendSmokeColumn" {
 Properties {
 	_MainTex ("Particle Texture", 2D) = "white" {}
 	_Speed ("Speed Multiplier", Range (0,1)) = 1
@@ -42,7 +44,7 @@ Category {
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
 				o.color = v.color;
 				o.texcoord = TRANSFORM_TEX(v.texcoord,_MainTex);
-				o.worldPos = mul(_Object2World, v.vertex).xyz;
+				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 				return o;
 			}
 

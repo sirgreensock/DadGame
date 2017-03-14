@@ -8,6 +8,7 @@ using Poly2Tri;
 //using Poly2Tri.Triangulation.Delaunay.Sweep;
 //using Poly2Tri.Triangulation.Polygon;
 using System.Linq;
+using System.IO;
 
 
 public class Puppet2D_CreatePolygonFromSprite : Editor {
@@ -34,6 +35,8 @@ public class Puppet2D_CreatePolygonFromSprite : Editor {
 
 	public GameObject Run (Transform transform,bool ReverseNormals, int triangleIndex)
 	{
+        Vector3 CurrentScale = transform.localScale;
+        transform.localScale = Vector3.one;
 
 		PolygonCollider2D polygonCollider = transform.GetComponent<PolygonCollider2D>();
 
@@ -47,12 +50,16 @@ public class Puppet2D_CreatePolygonFromSprite : Editor {
 		mr = MeshedSprite.AddComponent<MeshRenderer>();
 		mesh = new Mesh();
 
+        if(!Directory.Exists(Puppet2D_Editor._puppet2DPath+"/Models"))
+            Directory.CreateDirectory(Puppet2D_Editor._puppet2DPath+"/Models");
+
 		if(AssetDatabase.LoadAssetAtPath(Puppet2D_Editor._puppet2DPath+"/Models/"+transform.name+"_MESH.asset",typeof(Mesh)))
 		{
 			if(EditorUtility.DisplayDialog("Overwrite Asset?","Do you want to overwrite the current Mesh & Material?","Yes, Overwrite","No, Create New Mesh & Material"))
 			{
 				//mf.mesh = AssetDatabase.LoadAssetAtPath(Puppet2D_Editor._puppet2DPath+"/Models/"+transform.name+"_MESH.asset",typeof(Mesh))as Mesh;
-				string meshPath = (Puppet2D_Editor._puppet2DPath+"/Models/"+transform.name+"_MESH.asset");
+                                    
+                string meshPath = (Puppet2D_Editor._puppet2DPath+"/Models/"+transform.name+"_MESH.asset");
 				AssetDatabase.CreateAsset(mesh,meshPath);
 				overwrite = true;
 			}
@@ -89,7 +96,8 @@ public class Puppet2D_CreatePolygonFromSprite : Editor {
 		uvs.Clear();
 		normals.Clear();
 
-
+        if(!Directory.Exists(Puppet2D_Editor._puppet2DPath+"/Models/Materials"))
+            Directory.CreateDirectory(Puppet2D_Editor._puppet2DPath+"/Models/Materials");
 		if(overwrite)
 		{
 			mr.material = AssetDatabase.LoadAssetAtPath(Puppet2D_Editor._puppet2DPath+"/Models/Materials/"+transform.name+"_MAT.mat",typeof(Material)) as Material;
@@ -103,7 +111,7 @@ public class Puppet2D_CreatePolygonFromSprite : Editor {
 			mr.material = newMat;
 		}
 
-
+        MeshedSprite.transform.localScale = CurrentScale;
 
 
 		return MeshedSprite;
@@ -256,7 +264,6 @@ public class Puppet2D_CreatePolygonFromSprite : Editor {
 		finalUvs= uvs.ToArray();
 
 		finalTriangles = resultsTriIndexesReversed.ToArray();
-
 	}
 	public List<Vector2> CreateSubVertPoints(Bounds bounds, List<Vector2> vertsToCopy, float subdivLevel)
 	{
